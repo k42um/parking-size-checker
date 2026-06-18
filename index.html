@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>駐車場 広さ判定 & 駐車シミュレーター</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header id="topbar">
+    <h1>🅿️ 駐車場 広さ判定 &amp; 駐車シミュレーター</h1>
+    <div class="topbar-controls">
+      <input id="apiKey" type="password" placeholder="Google Maps APIキー" autocomplete="off" />
+      <button id="loadMapBtn">地図を表示</button>
+      <div id="searchContainer"></div>
+    </div>
+  </header>
+
+  <div id="layout">
+    <aside id="panel">
+      <section class="panel-section">
+        <h2>1. 描画モード</h2>
+        <p class="hint">衛星画像を見ながら、各要素を地図上に描いてください。</p>
+        <div class="mode-buttons">
+          <button class="mode-btn" data-mode="stall">▭ 区画を追加</button>
+          <button class="mode-btn" data-mode="aisle">― 通路の中心線</button>
+          <button class="mode-btn" data-mode="width">↔ 道幅を測る</button>
+          <button class="mode-btn" data-mode="entrance">⛳ 入口を置く</button>
+          <button class="mode-btn" data-mode="none">✋ 操作（移動）</button>
+        </div>
+        <button id="clearBtn" class="danger">すべて消去</button>
+      </section>
+
+      <section class="panel-section">
+        <h2>2. 計測結果</h2>
+        <div id="measurements">
+          <div class="metric">
+            <span class="metric-label">区画 平均幅</span>
+            <span class="metric-value" id="mStallWidth">—</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">区画 平均奥行</span>
+            <span class="metric-value" id="mStallLength">—</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">道幅（通路幅）</span>
+            <span class="metric-value" id="mRoadWidth">—</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">区画数</span>
+            <span class="metric-value" id="mStallCount">0</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel-section">
+        <h2>3. 総合判定</h2>
+        <div id="verdict" class="verdict verdict-unknown">未計測</div>
+        <ul id="verdictDetail" class="verdict-detail"></ul>
+      </section>
+
+      <section class="panel-section">
+        <h2>4. 駐車シミュレーション</h2>
+        <p class="hint">入口・通路中心線・区画を用意してから実行します。区画をクリックして対象を選ぶこともできます。</p>
+        <label class="sim-row">
+          対象区画:
+          <select id="targetStall"></select>
+        </label>
+        <div class="sim-buttons">
+          <button id="simulateBtn">経路を計算</button>
+          <button id="playBtn" disabled>▶ 再生</button>
+        </div>
+        <div id="simInfo" class="sim-info"></div>
+      </section>
+
+      <section class="panel-section legend">
+        <h2>凡例</h2>
+        <ul>
+          <li><span class="swatch" style="background:#1e88e5"></span>区画</li>
+          <li><span class="swatch" style="background:#fb8c00"></span>通路の中心線</li>
+          <li><span class="swatch" style="background:#e53935"></span>道幅の計測線</li>
+          <li><span class="swatch" style="background:#43a047"></span>入口</li>
+          <li><span class="swatch" style="background:#8e24aa"></span>駐車経路</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main id="map-wrap">
+      <div id="map"></div>
+      <div id="draw-tip"></div>
+      <div id="map-placeholder">
+        <div>
+          <p>上のバーに <b>Google Maps APIキー</b> を入力して「地図を表示」を押してください。</p>
+          <p class="hint">APIキーの取得方法は README.md を参照。</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
